@@ -1,0 +1,16 @@
+* A Brainf**k interpreter in Idris
+
+To compile, write:
+#+BEGIN_SRC bash
+ idris --build brainfun.ipkg
+#+END_SRC
+
+The resulting executable will be called =brainfun= (or =brainfun.exe=
+on Windows).
+
+With no arguments, the program is read on one line from standard
+input. With one argument, the argument is the source file.
+
+** TODO
+ - Uniqueness types for the state to reduce allocations
+ - Convince =go= to pass the coverage checker

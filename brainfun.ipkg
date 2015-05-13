@@ -1,0 +1,13 @@
+package brainfun
+
+-- BrainFun
+-- by David Raymond Christiansen
+
+opts = ""
+sourcedir = src
+modules = BrainFun.State, BrainFun.Commands, BrainFun.Interpreter
+
+
+main = BrainFun.Interpreter
+
+executable = brainfun
