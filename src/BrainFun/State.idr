@@ -2,28 +2,21 @@ module BrainFun.State
 
 %default total
 
-||| A zipper over an infinite memory of bytes. The regions that have
-||| been accessed are represented, while the unread/unwritten regions
-||| are lists that are extended as necessary.
+||| A zipper over an infinite memory of bytes. Coinductive streams are
+||| used for each direction, to save the manual extension.
 data DataPtr : Type where
-  Focused : (left : List Bits8) -> (ptrVal : Bits8) -> (right : List Bits8) -> DataPtr
-
-||| Debugging aid
-dump : DataPtr -> String
-dump (Focused l p r) = concatMap show (reverse l) ++ " -[" ++ show p ++ "]- " ++ concatMap show r
+  Focused : (left : Stream Bits8) -> (ptrVal : Bits8) -> (right : Stream Bits8) -> DataPtr
 
 ||| The initial state - an infinite sequence of zeroes.
 initData : DataPtr
-initData = Focused [] 0 []
+initData = Focused (repeat 0) 0 (repeat 0)
 
 ||| Move the focus one place to the left
 moveLeft : DataPtr -> DataPtr
-moveLeft (Focused []        ptrVal right) = Focused []   0 (ptrVal :: right)
 moveLeft (Focused (x::left) ptrVal right) = Focused left x (ptrVal :: right)
 
 ||| Move the focus one place to the right
 moveRight : DataPtr -> DataPtr
-moveRight (Focused left ptrVal [])         = Focused (ptrVal :: left) 0 []
 moveRight (Focused left ptrVal (x::right)) = Focused (ptrVal :: left) x right
 
 ||| Modify the focused value
