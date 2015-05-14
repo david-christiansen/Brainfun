@@ -7,11 +7,9 @@ data Program : Type where
   EmptyProgram : Program
   Instructions : List Char -> Char -> List Char -> Program 
 
-source : Program -> String
-source EmptyProgram = "(empty)"
-source (Instructions l f r) = pack (reverse l) ++ "_" ++ singleton f ++ "_" ++ pack r
-
-||| There are eight instructions
+||| There are eight instructions. The type represents the actual
+||| source character, which allows the datatype to be used as a view
+||| over actual input characters.
 data Instruction : Char -> Type where
   Left  : Instruction '<'
   Right : Instruction '>'
@@ -22,6 +20,7 @@ data Instruction : Char -> Type where
   Begin : Instruction '['
   End   : Instruction ']'
 
+||| View a character as a command.
 isCommand : (c : Char) -> Maybe (Instruction c)
 isCommand '<' = Just Left
 isCommand '>' = Just Right
